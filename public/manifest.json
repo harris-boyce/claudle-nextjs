@@ -1,0 +1,28 @@
+{
+  "name": "ClaudLE - AI-Enhanced Wordle",
+  "short_name": "ClaudLE",
+  "description": "Play Wordle with AI coaching from Ted Lasso or Roy Kent! 10 unique themes and intelligent strategy tips.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "screenshots": [
+    {
+      "src": "/screenshot-1.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "platform": "narrow"
+    }
+  ]
+}

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { RotateCcw, HelpCircle, Loader2, X, Trophy, Lightbulb, Settings, Zap, BarChart3, Brain } from 'lucide-react'
 import { THEMES, ThemeKey, Personality } from '@/lib/game-types'
+import { getDeviceInfo, updateDeviceAnalytics } from '@/lib/device-analytics'
 
 const ClaudLE = () => {
   const [currentGuess, setCurrentGuess] = useState('')
@@ -93,16 +94,27 @@ const ClaudLE = () => {
     </div>
   )
 
-  // Load stats from localStorage
+  // Load stats from localStorage and initialize device tracking
   useEffect(() => {
     const savedStats = localStorage.getItem('claudle-stats')
     if (savedStats) {
       setStats(JSON.parse(savedStats))
     }
+
+    // Initialize device analytics (creates device ID if needed)
+    getDeviceInfo()
   }, [])
 
   // Update stats
   const updateStats = (won: boolean, guessCount: number) => {
+    // Update device analytics
+    updateDeviceAnalytics({
+      gameWon: won,
+      guessCount,
+      theme,
+      personality
+    })
+
     setStats(prev => {
       const newStats = {
         gamesPlayed: prev.gamesPlayed + 1,
