@@ -105,7 +105,8 @@ export function middleware(request: NextRequest) {
   // Clean up old entries periodically (basic garbage collection)
   if (Math.random() < 0.01) { // 1% chance on each request
     const now = Date.now()
-    for (const [key, value] of rateLimitStore.entries()) {
+    const entries = Array.from(rateLimitStore.entries())
+    for (const [key, value] of entries) {
       if (now > value.resetTime) {
         rateLimitStore.delete(key)
       }

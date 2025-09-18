@@ -86,8 +86,8 @@ Give them a helpful hint without revealing the answer. Make the hint more specif
     }
 
     return NextResponse.json({
-      hint: fallbackHints[request.json().personality as Personality] || fallbackHints.lasso,
-      personality: request.json().personality || 'lasso',
+      hint: fallbackHints.lasso,
+      personality: 'lasso',
       fallback: true
     })
   }

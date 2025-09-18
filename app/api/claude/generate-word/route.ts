@@ -78,10 +78,11 @@ Respond with ONLY the word in uppercase letters, nothing else.`
       nature: 'FLORA'
     }
 
+    const fallbackTheme = 'original'
     return NextResponse.json({
-      word: fallbackWords[request.json().theme] || 'AUDIO',
-      theme: THEMES[request.json().theme]?.name || 'Classic Words',
-      difficulty: THEMES[request.json().theme]?.difficulty || 'Medium',
+      word: fallbackWords[fallbackTheme] || 'AUDIO',
+      theme: THEMES[fallbackTheme].name,
+      difficulty: THEMES[fallbackTheme].difficulty,
       fallback: true
     })
   }

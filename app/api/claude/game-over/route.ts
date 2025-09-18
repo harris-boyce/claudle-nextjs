@@ -76,13 +76,13 @@ Keep it short and stay in character!`
       }
     }
 
-    const personalityKey = request.json().personality as Personality || 'lasso'
-    const outcomeKey = request.json().won ? 'won' : 'lost'
+    const personalityKey: Personality = 'lasso'
+    const outcomeKey = 'lost'
 
     return NextResponse.json({
       feedback: fallbackMessages[personalityKey][outcomeKey],
-      won: request.json().won,
-      guessCount: request.json().guesses?.length || 0,
+      won: false,
+      guessCount: 0,
       personality: personalityKey,
       fallback: true
     })

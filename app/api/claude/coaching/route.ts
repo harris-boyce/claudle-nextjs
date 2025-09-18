@@ -121,8 +121,8 @@ Keep it under 100 words and stay in character. Be encouraging but educational.`
     }
 
     return NextResponse.json({
-      coaching: fallbackCoaching[request.json().personality as Personality] || fallbackCoaching.lasso,
-      personality: request.json().personality || 'lasso',
+      coaching: fallbackCoaching.lasso,
+      personality: 'lasso',
       enabled: true,
       fallback: true
     })
