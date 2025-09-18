@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { RotateCcw, HelpCircle, Loader2, X, Trophy, Lightbulb, Settings, Zap, BarChart3, Brain } from 'lucide-react'
 import { THEMES, ThemeKey, Personality } from '@/lib/game-types'
 import { getDeviceInfo, updateDeviceAnalytics } from '@/lib/device-analytics'
+import { useInstallPrompt } from '@/hooks/useInstallPrompt'
+import InstallPrompt from './InstallPrompt'
 
 const ClaudLE = () => {
   const [currentGuess, setCurrentGuess] = useState('')
@@ -39,6 +41,9 @@ const ClaudLE = () => {
   // Animation states
   const [shakeRow, setShakeRow] = useState<number | null>(null)
   const [flipRow, setFlipRow] = useState<number | null>(null)
+
+  // Install prompt
+  const [installPromptState, installPromptActions] = useInstallPrompt()
 
   // Game statistics
   const [stats, setStats] = useState({
@@ -319,6 +324,7 @@ const ClaudLE = () => {
       setTimeout(() => {
         getGameOverMessage(true)
         setShowGameOverModal(true)
+        checkInstallPrompt()
       }, 1500)
     } else if (newGuesses.length >= 6) {
       setGameState('lost')
@@ -326,6 +332,7 @@ const ClaudLE = () => {
       setTimeout(() => {
         getGameOverMessage(false)
         setShowGameOverModal(true)
+        checkInstallPrompt()
       }, 1500)
     }
 
@@ -370,6 +377,14 @@ const ClaudLE = () => {
 
   // Calculate win rate
   const winRate = stats.gamesPlayed > 0 ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0
+
+  // Check if we should show install prompt
+  const checkInstallPrompt = () => {
+    if (!installPromptState.isInstalled && installPromptState.shouldShow && !installPromptState.canInstall) {
+      // For platforms that need manual prompting (iOS Safari, etc.)
+      setTimeout(() => installPromptActions.showInstallPrompt(), 2000)
+    }
+  }
 
   if (!gameStarted) {
     return (
@@ -911,6 +926,15 @@ const ClaudLE = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Install Prompt */}
+      <InstallPrompt
+        isOpen={installPromptState.shouldShow && !installPromptState.isInstalled}
+        onClose={() => installPromptActions.dismissPrompt('later')}
+        onInstall={installPromptActions.installApp}
+        onDismiss={installPromptActions.dismissPrompt}
+        platform={installPromptState.platform}
+      />
     </div>
   )
 }

@@ -4,6 +4,7 @@ export interface DeviceInfo {
   id: string
   firstSeen: string
   lastSeen: string
+  sessions: number
   gamesPlayed: number
   gamesWon: number
   totalGuesses: number
@@ -12,6 +13,11 @@ export interface DeviceInfo {
   favoritePersonality: string
   installTime?: string
   isPWA: boolean
+  installPromptDismissed?: string
+  installPromptCooldown?: number
+  installAttempted?: string
+  installOutcome?: 'accepted' | 'dismissed'
+  installInstructionsShown?: string
 }
 
 // Generate stable device fingerprint
@@ -53,6 +59,7 @@ export function getDeviceInfo(): DeviceInfo {
       id: 'server',
       firstSeen: new Date().toISOString(),
       lastSeen: new Date().toISOString(),
+      sessions: 1,
       gamesPlayed: 0,
       gamesWon: 0,
       totalGuesses: 0,
@@ -68,7 +75,16 @@ export function getDeviceInfo(): DeviceInfo {
 
   if (stored) {
     const info = JSON.parse(stored) as DeviceInfo
-    info.lastSeen = new Date().toISOString()
+    const lastSeenDate = new Date(info.lastSeen)
+    const now = new Date()
+    const hoursSinceLastSeen = (now.getTime() - lastSeenDate.getTime()) / (1000 * 60 * 60)
+
+    // Count as new session if more than 30 minutes since last seen
+    if (hoursSinceLastSeen > 0.5) {
+      info.sessions = (info.sessions || 1) + 1
+    }
+
+    info.lastSeen = now.toISOString()
     info.isPWA = window.matchMedia('(display-mode: standalone)').matches
     localStorage.setItem(`claudle-device-${deviceId}`, JSON.stringify(info))
     return info
@@ -78,6 +94,7 @@ export function getDeviceInfo(): DeviceInfo {
     id: deviceId,
     firstSeen: new Date().toISOString(),
     lastSeen: new Date().toISOString(),
+    sessions: 1,
     gamesPlayed: 0,
     gamesWon: 0,
     totalGuesses: 0,
@@ -97,6 +114,11 @@ export function updateDeviceAnalytics(data: {
   guessCount?: number
   theme?: string
   personality?: string
+  installPromptDismissed?: string
+  installPromptCooldown?: number
+  installAttempted?: string
+  installOutcome?: 'accepted' | 'dismissed'
+  installInstructionsShown?: string
 }) {
   if (typeof window === 'undefined') return
 
