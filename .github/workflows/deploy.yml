@@ -97,10 +97,11 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --env ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY --env ENABLE_INTERACTIVE_COACHING=$ENABLE_INTERACTIVE_COACHING)
           echo "production_url=$url" >> $GITHUB_OUTPUT
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ENABLE_INTERACTIVE_COACHING: true
 
       - name: Create Release
         if: success()
