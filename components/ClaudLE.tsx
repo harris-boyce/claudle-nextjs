@@ -91,7 +91,7 @@ export default function ClaudLE() {
       setGameData(prev => ({ ...prev, targetWord: word }))
     }
     initGame()
-  }, [])
+  }, [gameData.difficulty])
 
   const startNewGame = async () => {
     const word = await generateNewWord(gameData.difficulty)

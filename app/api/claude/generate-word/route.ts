@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { claudeClient } from '@/lib/claude-client'
+import { claudeClient, checkApiKey } from '@/lib/claude-client'
 import { THEMES, ThemeKey } from '@/lib/game-types'
 
 export async function POST(request: NextRequest) {
   try {
+    checkApiKey()
     const { theme = 'original', usedWords = [] } = await request.json()
 
     // Validate theme

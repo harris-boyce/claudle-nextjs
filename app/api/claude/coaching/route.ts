@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { claudeClient } from '@/lib/claude-client'
+import { claudeClient, checkApiKey } from '@/lib/claude-client'
 import { THEMES, ThemeKey, Personality } from '@/lib/game-types'
 
 export async function POST(request: NextRequest) {
@@ -13,6 +13,8 @@ export async function POST(request: NextRequest) {
         enabled: false
       })
     }
+
+    checkApiKey()
 
     const {
       targetWord,
