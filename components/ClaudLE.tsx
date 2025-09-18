@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { RotateCcw, HelpCircle, Loader2, X, Trophy, Lightbulb, Settings, Zap, BarChart3, Brain } from 'lucide-react'
 import { THEMES, ThemeKey, Personality } from '@/lib/game-types'
+import { getDeviceInfo, updateDeviceAnalytics } from '@/lib/device-analytics'
 
 const ClaudLE = () => {
   const [currentGuess, setCurrentGuess] = useState('')
@@ -93,16 +94,27 @@ const ClaudLE = () => {
     </div>
   )
 
-  // Load stats from localStorage
+  // Load stats from localStorage and initialize device tracking
   useEffect(() => {
     const savedStats = localStorage.getItem('claudle-stats')
     if (savedStats) {
       setStats(JSON.parse(savedStats))
     }
+
+    // Initialize device analytics (creates device ID if needed)
+    getDeviceInfo()
   }, [])
 
   // Update stats
   const updateStats = (won: boolean, guessCount: number) => {
+    // Update device analytics
+    updateDeviceAnalytics({
+      gameWon: won,
+      guessCount,
+      theme,
+      personality
+    })
+
     setStats(prev => {
       const newStats = {
         gamesPlayed: prev.gamesPlayed + 1,
@@ -361,12 +373,12 @@ const ClaudLE = () => {
 
   if (!gameStarted) {
     return (
-      <div className="max-w-lg mx-auto mt-8 p-6 bg-white rounded-xl shadow-xl">
+      <div className="max-w-lg mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             ClaudLE
           </h1>
-          <p className="text-gray-600 flex items-center justify-center">
+          <p className="text-gray-600 dark:text-gray-300 flex items-center justify-center">
             <Brain className="h-4 w-4 mr-2" />
             AI-Powered Word Guessing with Interactive Coach
           </p>
@@ -374,7 +386,7 @@ const ClaudLE = () => {
 
         <div className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Choose Your Theme:
             </label>
             <div className="grid grid-cols-2 gap-3 max-h-64 overflow-y-auto">
@@ -385,14 +397,14 @@ const ClaudLE = () => {
                   className={`p-3 rounded-lg border-2 text-left transition-all transform hover:scale-105 ${
                     theme === key
                       ? 'border-blue-500 bg-blue-50 shadow-md'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-xl">{themeData.icon}</span>
                     <div>
                       <div className="font-medium text-sm">{themeData.name}</div>
-                      <div className="text-xs text-gray-500">{themeData.difficulty}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{themeData.difficulty}</div>
                     </div>
                   </div>
                 </button>
@@ -401,7 +413,7 @@ const ClaudLE = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Choose Your Coach:
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -414,7 +426,7 @@ const ClaudLE = () => {
                 }`}
               >
                 <div className="font-medium">Ted Lasso 😊</div>
-                <div className="text-xs text-gray-500">Positive & Encouraging</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Positive & Encouraging</div>
               </button>
               <button
                 onClick={() => setPersonality('kent')}
@@ -425,15 +437,15 @@ const ClaudLE = () => {
                 }`}
               >
                 <div className="font-medium">Roy Kent 😤</div>
-                <div className="text-xs text-gray-500">Gruff but Caring</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Gruff but Caring</div>
               </button>
             </div>
           </div>
 
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div>
-              <span className="font-medium text-gray-700">Start with &quot;AUDIO&quot;</span>
-              <div className="text-sm text-gray-500">Begin each game with AUDIO as first guess</div>
+              <span className="font-medium text-gray-700 dark:text-gray-300">Start with &quot;AUDIO&quot;</span>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Begin each game with AUDIO as first guess</div>
             </div>
             <button
               onClick={() => setUseAudioStart(!useAudioStart)}
@@ -449,8 +461,8 @@ const ClaudLE = () => {
 
           <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
             <div>
-              <span className="font-medium text-gray-700">Interactive Coach</span>
-              <div className="text-sm text-gray-500">Get real-time strategy advice as you type</div>
+              <span className="font-medium text-gray-700 dark:text-gray-300">Interactive Coach</span>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Get real-time strategy advice as you type</div>
             </div>
             <button
               onClick={() => setInteractiveCoach(!interactiveCoach)}
@@ -486,7 +498,7 @@ const ClaudLE = () => {
           )}
         </div>
 
-        <div className="mt-6 text-sm text-gray-600 bg-gray-50 p-4 rounded-lg">
+        <div className="mt-6 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
           <p className="font-medium mb-2">How to play ClaudLE:</p>
           <ul className="space-y-1">
             <li>🎯 You have 6 tries to guess the 5-letter word</li>
@@ -502,7 +514,7 @@ const ClaudLE = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-xl shadow-xl">
+    <div className="max-w-md mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -510,7 +522,7 @@ const ClaudLE = () => {
             <span className="mr-2">{THEMES[theme].icon}</span>
             ClaudLE
           </h1>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500 dark:text-gray-400">
             {THEMES[theme].name} • {personality === 'lasso' ? 'Ted Lasso 😊' : 'Roy Kent 😤'}
             {interactiveCoach && <span className="ml-2 text-purple-600 font-medium">• Interactive</span>}
           </div>
@@ -544,8 +556,8 @@ const ClaudLE = () => {
       {/* Progress Bar */}
       <div className="mb-6">
         <div className="flex justify-between text-sm text-gray-600 mb-2">
-          <span>Progress: {guesses.length}/6</span>
-          <span>Words played: {usedWords.size}</span>
+          <span className="text-gray-700 dark:text-gray-300">Progress: {guesses.length}/6</span>
+          <span className="text-gray-700 dark:text-gray-300">Words played: {usedWords.size}</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2.5">
           <div
@@ -572,7 +584,7 @@ const ClaudLE = () => {
               const letter = isCurrentRow && currentGuess[colIndex] ? currentGuess[colIndex] :
                             guess ? guess[colIndex] : ''
 
-              let bgColor = 'bg-gray-100 border-2 border-gray-300'
+              let bgColor = 'bg-gray-100 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600'
 
               if (guess) {
                 const status = getLetterStatus(guess, colIndex)
@@ -580,13 +592,13 @@ const ClaudLE = () => {
                 else if (status === 'present') bgColor = 'bg-yellow-500 text-white border-yellow-500 shadow-md'
                 else bgColor = 'bg-gray-400 text-white border-gray-400'
               } else if (isCurrentRow && letter) {
-                bgColor = 'bg-gray-200 border-gray-400 transform scale-105'
+                bgColor = 'bg-gray-200 dark:bg-gray-600 border-gray-400 dark:border-gray-500 transform scale-105 text-gray-900 dark:text-white'
               }
 
               return (
                 <div
                   key={colIndex}
-                  className={`w-12 h-12 flex items-center justify-center text-lg font-bold uppercase transition-all duration-300 rounded ${bgColor}`}
+                  className={`w-12 h-12 flex items-center justify-center text-lg font-bold uppercase transition-all duration-300 rounded ${bgColor} ${!guess && !letter ? 'text-gray-900 dark:text-white' : ''}`}
                 >
                   {letter}
                 </div>
@@ -637,7 +649,7 @@ const ClaudLE = () => {
             value={currentGuess}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            className="w-full p-3 border-2 border-gray-300 rounded-lg text-center text-lg font-bold uppercase focus:border-blue-500 focus:outline-none transition-colors shadow-sm"
+            className="w-full p-3 border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg text-center text-lg font-bold uppercase focus:border-blue-500 focus:outline-none transition-colors shadow-sm"
             placeholder="Enter your guess"
             maxLength={5}
             autoComplete="off"
@@ -801,14 +813,14 @@ const ClaudLE = () => {
                   className={`p-3 rounded-lg border-2 text-left text-sm transition-all transform hover:scale-105 ${
                     theme === key
                       ? 'border-blue-500 bg-blue-50 shadow-md'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="flex items-center space-x-2">
                     <span className="text-lg">{themeData.icon}</span>
                     <div>
                       <div className="font-medium">{themeData.name}</div>
-                      <div className="text-xs text-gray-500">{themeData.difficulty}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{themeData.difficulty}</div>
                     </div>
                   </div>
                 </button>
@@ -828,7 +840,7 @@ const ClaudLE = () => {
                 }`}
               >
                 <div className="font-medium">Ted Lasso 😊</div>
-                <div className="text-xs text-gray-500">Positive & Encouraging</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Positive & Encouraging</div>
               </button>
               <button
                 onClick={() => setPersonality('kent')}
@@ -839,7 +851,7 @@ const ClaudLE = () => {
                 }`}
               >
                 <div className="font-medium">Roy Kent 😤</div>
-                <div className="text-xs text-gray-500">Gruff but Caring</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Gruff but Caring</div>
               </button>
             </div>
           </div>
@@ -847,7 +859,7 @@ const ClaudLE = () => {
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div>
               <div className="font-medium">Start with &quot;AUDIO&quot;</div>
-              <div className="text-sm text-gray-500">Begin each game with AUDIO as first guess</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Begin each game with AUDIO as first guess</div>
             </div>
             <button
               onClick={() => setUseAudioStart(!useAudioStart)}
@@ -864,7 +876,7 @@ const ClaudLE = () => {
           <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
             <div>
               <div className="font-medium">Interactive Coach</div>
-              <div className="text-sm text-gray-500">Get real-time strategy advice as you type</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Get real-time strategy advice as you type</div>
             </div>
             <button
               onClick={() => setInteractiveCoach(!interactiveCoach)}
