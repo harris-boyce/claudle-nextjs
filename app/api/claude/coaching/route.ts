@@ -122,9 +122,11 @@ Keep it under 100 words and stay in character. Be encouraging but educational.`
       kent: "Right, can't analyze that properly right now. But listen - stick to what you know and don't overthink it. You've got the tools, use them."
     }
 
+    const { personality = 'lasso' } = await request.json().catch(() => ({ personality: 'lasso' }))
+
     return NextResponse.json({
-      coaching: fallbackCoaching.lasso,
-      personality: 'lasso',
+      coaching: fallbackCoaching[personality as Personality] || fallbackCoaching.lasso,
+      personality,
       enabled: true,
       fallback: true
     })

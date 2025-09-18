@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -59,8 +64,11 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --env ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY --env ENABLE_INTERACTIVE_COACHING=$ENABLE_INTERACTIVE_COACHING)
           echo "preview_url=$url" >> $GITHUB_OUTPUT
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ENABLE_INTERACTIVE_COACHING: true
 
       - name: Comment Preview URL
         if: github.event_name == 'pull_request'
@@ -101,7 +109,7 @@ jobs:
           echo "production_url=$url" >> $GITHUB_OUTPUT
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ENABLE_INTERACTIVE_COACHING: true
+          ENABLE_INTERACTIVE_COACHING: false
 
       - name: Create Release
         if: success()
