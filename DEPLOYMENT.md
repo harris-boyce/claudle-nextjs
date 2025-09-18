@@ -146,8 +146,8 @@ cat .vercel/project.json
 
 ### Analytics:
 ```bash
-# Add Vercel Analytics
-npm install @vercel/analytics
+# Vercel Analytics already integrated!
+# Analytics automatically tracks page views and performance
 ```
 
 ### Database (if needed later):
