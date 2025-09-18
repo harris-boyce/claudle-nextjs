@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { RotateCcw, HelpCircle, Loader2, X, Trophy, Lightbulb, Settings, Zap, BarChart3, Brain } from 'lucide-react'
 import { THEMES, ThemeKey, Personality } from '@/lib/game-types'
 import { getDeviceInfo, updateDeviceAnalytics } from '@/lib/device-analytics'
+import { useInstallPrompt } from '@/hooks/useInstallPrompt'
+import InstallPrompt from './InstallPrompt'
 
 const ClaudLE = () => {
   const [currentGuess, setCurrentGuess] = useState('')
@@ -39,6 +41,9 @@ const ClaudLE = () => {
   // Animation states
   const [shakeRow, setShakeRow] = useState<number | null>(null)
   const [flipRow, setFlipRow] = useState<number | null>(null)
+
+  // Install prompt
+  const [installPromptState, installPromptActions] = useInstallPrompt()
 
   // Game statistics
   const [stats, setStats] = useState({
@@ -319,6 +324,7 @@ const ClaudLE = () => {
       setTimeout(() => {
         getGameOverMessage(true)
         setShowGameOverModal(true)
+        checkInstallPrompt()
       }, 1500)
     } else if (newGuesses.length >= 6) {
       setGameState('lost')
@@ -326,6 +332,7 @@ const ClaudLE = () => {
       setTimeout(() => {
         getGameOverMessage(false)
         setShowGameOverModal(true)
+        checkInstallPrompt()
       }, 1500)
     }
 
@@ -371,6 +378,14 @@ const ClaudLE = () => {
   // Calculate win rate
   const winRate = stats.gamesPlayed > 0 ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0
 
+  // Check if we should show install prompt
+  const checkInstallPrompt = () => {
+    if (!installPromptState.isInstalled && installPromptState.shouldShow && !installPromptState.canInstall) {
+      // For platforms that need manual prompting (iOS Safari, etc.)
+      setTimeout(() => installPromptActions.showInstallPrompt(), 2000)
+    }
+  }
+
   if (!gameStarted) {
     return (
       <div className="max-w-lg mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-xl">
@@ -396,15 +411,15 @@ const ClaudLE = () => {
                   onClick={() => setTheme(key as ThemeKey)}
                   className={`p-3 rounded-lg border-2 text-left transition-all transform hover:scale-105 ${
                     theme === key
-                      ? 'border-blue-500 bg-blue-50 shadow-md'
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-400 shadow-md'
                       : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-xl">{themeData.icon}</span>
                     <div>
-                      <div className="font-medium text-sm">{themeData.name}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{themeData.difficulty}</div>
+                      <div className={`font-medium text-sm ${theme === key ? 'text-gray-900 dark:text-white' : ''}`}>{themeData.name}</div>
+                      <div className={`text-xs ${theme === key ? 'text-gray-700 dark:text-gray-300' : 'text-gray-500 dark:text-gray-400'}`}>{themeData.difficulty}</div>
                     </div>
                   </div>
                 </button>
@@ -421,28 +436,28 @@ const ClaudLE = () => {
                 onClick={() => setPersonality('lasso')}
                 className={`p-4 rounded-lg border-2 text-left transition-all transform hover:scale-105 ${
                   personality === 'lasso'
-                    ? 'border-green-500 bg-green-50 shadow-md'
-                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                    ? 'border-green-500 bg-green-50 dark:bg-green-900/30 dark:border-green-400 shadow-md'
+                    : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
-                <div className="font-medium">Ted Lasso 😊</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Positive & Encouraging</div>
+                <div className={`font-medium ${personality === 'lasso' ? 'text-gray-900 dark:text-white' : ''}`}>Ted Lasso 😊</div>
+                <div className={`text-xs ${personality === 'lasso' ? 'text-gray-700 dark:text-gray-300' : 'text-gray-500 dark:text-gray-400'}`}>Positive & Encouraging</div>
               </button>
               <button
                 onClick={() => setPersonality('kent')}
                 className={`p-4 rounded-lg border-2 text-left transition-all transform hover:scale-105 ${
                   personality === 'kent'
-                    ? 'border-red-500 bg-red-50 shadow-md'
-                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                    ? 'border-red-500 bg-red-50 dark:bg-red-900/30 dark:border-red-400 shadow-md'
+                    : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
-                <div className="font-medium">Roy Kent 😤</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Gruff but Caring</div>
+                <div className={`font-medium ${personality === 'kent' ? 'text-gray-900 dark:text-white' : ''}`}>Roy Kent 😤</div>
+                <div className={`text-xs ${personality === 'kent' ? 'text-gray-700 dark:text-gray-300' : 'text-gray-500 dark:text-gray-400'}`}>Gruff but Caring</div>
               </button>
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div>
               <span className="font-medium text-gray-700 dark:text-gray-300">Start with &quot;AUDIO&quot;</span>
               <div className="text-sm text-gray-500 dark:text-gray-400">Begin each game with AUDIO as first guess</div>
@@ -911,6 +926,15 @@ const ClaudLE = () => {
           </div>
         </div>
       </Modal>
+
+      {/* Install Prompt */}
+      <InstallPrompt
+        isOpen={installPromptState.shouldShow && !installPromptState.isInstalled}
+        onClose={() => installPromptActions.dismissPrompt('later')}
+        onInstall={installPromptActions.installApp}
+        onDismiss={installPromptActions.dismissPrompt}
+        platform={installPromptState.platform}
+      />
     </div>
   )
 }
