@@ -1,101 +1,182 @@
-# ClaudLE - AI-Enhanced Wordle with Next.js
+# 🎯 ClaudLE - Learn AI Prompt Engineering Through Interactive Gameplay
 
-An intelligent Wordle game enhanced with AI hints and coaching from Claude.
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Claude API](https://img.shields.io/badge/Claude-Sonnet%204-orange?logo=anthropic)](https://www.anthropic.com/)
+[![PWA Ready](https://img.shields.io/badge/PWA-Ready-green?logo=pwa)](https://web.dev/progressive-web-apps/)
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+> **Experience advanced AI prompt engineering in action through an interactive word-guessing game with real-time AI coaching.**
 
-- **AI-Powered Hints**: Get gentle nudges, strategic advice, or direct hints from Claude
-- **Adaptive Difficulty**: Easy, medium, and hard word generation
-- **Smart Coaching**: Real-time feedback on your guessing strategy
-- **Game Analysis**: Post-game insights and performance analysis
-- **Modern UI**: Built with Next.js 14, React, and Tailwind CSS
+## 🚀 What Makes This Special
 
-## Getting Started
+ClaudLE isn't just another word game—it's a **living demonstration of sophisticated prompt engineering techniques** that you can study, modify, and learn from. See how context-aware prompting, personality-driven AI, and adaptive difficulty create engaging user experiences.
+
+### 🎓 Educational Value
+- **Real Prompt Engineering**: Study actual prompts used for AI coaching
+- **Strategy Optimization**: Learn through AI-powered real-time feedback
+- **Personality-Driven AI**: See how different prompt styles create distinct AI personalities
+- **Progressive Learning Path**: From basic game mechanics to advanced AI integration
+
+## 📚 Progressive Tutorial (Learn by Building)
+
+This repository includes a complete **"Angular Tutorial"-style learning progression** using git tags:
+
+### 🎯 Learning Path:
+- 📝 [`tutorial-00-idea-to-artifact`](./TUTORIAL-00-ARTIFACT-ORIGIN.md) - From concept to Claude artifact
+- 🎮 `tutorial-01-basic-game` - Core game mechanics & React patterns
+- 🤖 `tutorial-02-ai-integration` - Adding Claude API & prompt basics
+- 🧠 `tutorial-03-prompt-engineering` - Advanced prompting techniques
+- 📱 `tutorial-04-pwa-features` - Progressive Web App implementation
+- 🎯 `tutorial-05-complete` - Full application with analytics
+
+### 🚀 Start Learning:
+```bash
+git clone https://github.com/yourusername/claudle-nextjs
+cd claudle-nextjs
+
+# Start with the origin story
+cat TUTORIAL-00-ARTIFACT-ORIGIN.md
+
+# Then progress through the tutorial
+git checkout tutorial-01-basic-game
+# Follow the README at each step
+```
+
+## 🔍 What You'll Actually Learn
+
+### Authentic Prompt Engineering Implementation
+- **Context-aware prompting** with detailed game state analysis
+- **Personality-driven AI** (Ted Lasso vs Roy Kent coaching styles)
+- **Progressive difficulty adaptation** in AI responses
+- **Strategy optimization** through real-time AI feedback
+- **Cost-effective AI integration** with feature flags and rate limiting
+
+### Real-World AI Development Patterns
+- Structured prompt construction with game state context
+- Error handling and fallback strategies for AI responses
+- Performance optimization for interactive AI experiences
+- Production-ready AI application architecture
+
+## ✨ Game Features
+
+- **🎭 Personality Coaching**: Choose between Ted Lasso's encouragement or Roy Kent's tough love
+- **🎲 10 Unique Themes**: From Classic words to Harry Potter, Disney, and more
+- **🧠 Real-time Strategy Analysis**: AI coaches your approach as you type
+- **💡 Adaptive Hints**: Context-aware hints that get more specific as you progress
+- **📱 PWA Ready**: Install as an app, play offline with cached word lists
+- **🌙 Dark Mode**: Automatic system theme detection
+- **📊 Privacy-first Analytics**: Track your progress without compromising privacy
+
+## 🛠️ Quick Start
 
 ### Prerequisites
-
 - Node.js 18+
 - An Anthropic API key ([get one here](https://console.anthropic.com/))
 
 ### Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+# Clone and setup
+git clone https://github.com/yourusername/claudle-nextjs
 cd claudle-nextjs
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
 
-3. Set up environment variables:
-```bash
+# Configure environment
 cp .env.local.example .env.local
-```
-Edit `.env.local` and add your Anthropic API key:
-```
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
-```
+# Add your ANTHROPIC_API_KEY to .env.local
 
-4. Run the development server:
-```bash
+# Start development
 npm run dev
+# Open http://localhost:3000
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+### 🚀 GitHub Codespaces Ready
+Click **"Code" → "Codespaces" → "Create codespace"** for instant setup with all dependencies configured.
 
-## Development with GitHub Codespaces
+## 🎯 For Developers & Learners
 
-This project includes full support for GitHub Codespaces and devcontainers:
+### Study the Prompt Engineering
+```typescript
+// See real prompt engineering in action
+// File: /app/api/claude/coaching/route.ts
 
-1. Click "Code" → "Codespaces" → "Create codespace on main"
-2. The environment will automatically set up with all dependencies
-3. The dev server will start automatically on port 3000
+const coachingPrompt = `${personalityPrompt}
 
-## API Routes
+The player is considering the guess "${currentGuess}" for attempt ${guessCount + 1}.
 
-The app includes several Claude-powered API endpoints:
+Game state analysis:
+- Previous guesses: ${guesses.join(', ')}
+- Letters ruled out: ${Array.from(wrongLetters).join(', ')}
+- Confirmed positions: ${correctLetters.map(c => `${c.letter} in position ${c.position}`).join(', ')}
 
-- `/api/claude/generate-word` - Generate new target words
-- `/api/claude/get-hint` - Get AI hints during gameplay
-- `/api/claude/coaching` - Get strategy coaching
-- `/api/claude/game-over` - Get post-game analysis
+WITHOUT revealing the target word, provide strategic coaching about this guess:
+1. Is this strategically optimal given what they know?
+2. Are they reusing ruled-out letters unnecessarily?
+3. Could they make a more information-gathering guess?
 
-## Deployment
+Stay in character and keep under 100 words.`
+```
+
+### API Architecture
+- **`/api/claude/generate-word`** - Theme-based word generation with difficulty control
+- **`/api/claude/get-hint`** - Context-aware hints with progressive difficulty
+- **`/api/claude/coaching`** - Real-time strategy analysis (feature-flagged)
+- **`/api/claude/game-over`** - Post-game analysis and encouragement
+
+### Cost Management & Production Ready
+- Rate limiting (5 games/day per IP, 30 hints/hour)
+- Feature flags for expensive operations
+- Fallback responses for offline/error scenarios
+- Caching strategies for repeated requests
+
+## 🚀 Deployment
 
 ### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add your `ANTHROPIC_API_KEY` as an environment variable in Vercel
+1. Push to GitHub
+2. Connect to Vercel
+3. Add `ANTHROPIC_API_KEY` environment variable
 4. Deploy!
 
 ### Other Platforms
+Works on any Next.js-compatible platform: Netlify, Railway, Render, or self-hosted.
 
-The app can be deployed to any platform that supports Next.js:
-- Netlify
-- Railway
-- Render
-- Self-hosted
+## 🤝 Contributing
 
-## Technology Stack
+We welcome contributions that enhance the educational value or improve the AI interactions!
 
-- **Framework**: Next.js 14 with App Router
-- **Frontend**: React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **AI Integration**: Anthropic Claude API
-- **Development**: GitHub Codespaces, ESLint, Prettier
+### Areas for Contribution:
+- **New coaching personalities** - Add different AI coaching styles
+- **Advanced prompt techniques** - Demonstrate new prompting patterns
+- **Educational content** - Improve tutorials and documentation
+- **Performance optimizations** - Enhance the AI integration efficiency
 
-## Contributing
-
+### Development Process:
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch (`git checkout -b feature/educational-enhancement`)
+3. Make your changes with clear commit messages
+4. Add/update relevant tutorial documentation
+5. Submit a Pull Request with learning outcomes described
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+## 🎓 Educational Context
+
+This project was created to demonstrate real-world prompt engineering techniques in an engaging, interactive format. It showcases:
+
+- **Production AI Integration** - Not just demos, but patterns you can use in real applications
+- **Cost-Effective AI Usage** - Practical approaches to managing AI API costs
+- **User Experience with AI** - How to make AI feel natural and helpful
+- **Iterative Prompt Development** - See how prompts evolved from simple to sophisticated
+
+**Perfect for**: Developers learning AI integration, prompt engineering students, educators teaching modern web development with AI, and anyone curious about building engaging AI-powered applications.
+
+### 🔗 Learn More
+- [Anthropic's Claude API Documentation](https://docs.anthropic.com/claude/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prompt Engineering Guide](https://www.promptingguide.ai/)
+
+**Built with Claude Code | Experience the future of AI-assisted development**
