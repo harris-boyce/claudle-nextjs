@@ -119,9 +119,9 @@ jobs:
             const { data: release } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_name: `v${new Date().toISOString().slice(0,10).replace(/-/g, '.')}`,
-              name: `ClaudLE Release - ${new Date().toISOString().slice(0,10)}`,
-              body: `🎯 **Production deployment successful!**\n\n🚀 Live URL: ${{ steps.deploy.outputs.production_url }}\n\n### Features:\n- AI-Enhanced Wordle\n- 10 Unique Themes\n- Ted Lasso & Roy Kent Coaching\n- Rate Limited API\n\n---\n*Deployed via GitHub Actions*`,
+              tag_name: `v1.0.${{ github.run_number }}`,
+              name: `ClaudLE v1.0.${{ github.run_number }} - ${{ github.event.head_commit.message }}`,
+              body: `🎯 **Production deployment successful!**\n\n🚀 Live URL: ${{ steps.deploy.outputs.production_url }}\n\nCommit: ${{ github.event.head_commit.message }}\nSHA: ${{ github.sha }}\n\n### Features:\n- AI-Enhanced Wordle\n- 10 Unique Themes\n- Ted Lasso & Roy Kent Coaching\n- Rate Limited API\n- Educational Prompt Engineering Resource\n\n---\n*Deployed via GitHub Actions*`,
               draft: false,
               prerelease: false
             })
