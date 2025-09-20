@@ -23,12 +23,12 @@ ClaudLE isn't just another word game—it's a **living demonstration of sophisti
 This repository includes a complete **"Angular Tutorial"-style learning progression** using git tags:
 
 ### 🎯 Learning Path:
-- 📝 [`tutorial-00-idea-to-artifact`](./TUTORIAL-00-ARTIFACT-ORIGIN.md) - From concept to Claude artifact
+- 📝 [`tutorial-00-idea-to-artifact`](./docs/tutorials/TUTORIAL-00-ARTIFACT-ORIGIN.md) - From concept to Claude artifact
 - 🎮 `tutorial-01-basic-game` - Core game mechanics & React patterns
 - 🤖 `tutorial-02-ai-integration` - Adding Claude API & prompt basics
 - 🧠 `tutorial-03-prompt-engineering` - Advanced prompting techniques
-- 📱 `tutorial-04-pwa-features` - Progressive Web App implementation
-- 🎯 `tutorial-05-complete` - Full application with analytics
+- 📱 `tutorial-04-operationalizing` - Production deployment & analytics
+- 🎯 `tutorial-05-complete-platform` - Full learning platform
 
 ### 🚀 Start Learning:
 ```bash
@@ -36,7 +36,7 @@ git clone https://github.com/yourusername/claudle-nextjs
 cd claudle-nextjs
 
 # Start with the origin story
-cat TUTORIAL-00-ARTIFACT-ORIGIN.md
+cat docs/tutorials/TUTORIAL-00-ARTIFACT-ORIGIN.md
 
 # Then progress through the tutorial
 git checkout tutorial-01-basic-game
@@ -68,30 +68,22 @@ git checkout tutorial-01-basic-game
 - **🌙 Dark Mode**: Automatic system theme detection
 - **📊 Privacy-first Analytics**: Track your progress without compromising privacy
 
-## 🛠️ Quick Start
+## 🚀 Quick Start
 
-### Prerequisites
-- Node.js 18+
-- An Anthropic API key ([get one here](https://console.anthropic.com/))
+> **"I created something cool in Claude Artifacts - now how do I make it a real app?"**
 
-### Installation
-```bash
-# Clone and setup
-git clone https://github.com/yourusername/claudle-nextjs
-cd claudle-nextjs
-npm install
+**[📖 Complete Getting Started Guide →](./docs/GETTING_STARTED.md)**
 
-# Configure environment
-cp .env.local.example .env.local
-# Add your ANTHROPIC_API_KEY to .env.local
+### **🌟 Instant Start (Recommended)**
+1. **Fork this repository**
+2. **Click "Code" → "Codespaces" → "Create codespace"**
+3. **Wait 2-3 minutes** for automatic setup
+4. **Start learning** - everything pre-configured!
 
-# Start development
-npm run dev
-# Open http://localhost:3000
-```
-
-### 🚀 GitHub Codespaces Ready
-Click **"Code" → "Codespaces" → "Create codespace"** for instant setup with all dependencies configured.
+### **🔧 Alternative Paths**
+- **Local + DevContainer**: Isolated development environment
+- **Traditional Setup**: Direct local development
+- **[See all options →](./docs/GETTING_STARTED.md)**
 
 ## 🎯 For Developers & Learners
 
