@@ -130,23 +130,86 @@ jobs:
 
   lighthouse:
     runs-on: ubuntu-latest
-    name: Lighthouse Performance Audit
-    needs: deploy-preview
+    name: Performance & Accessibility Audit
+    needs: test
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Wait for deployment
-        run: sleep 30
-
-      - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v10
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          urls: |
-            ${{ needs.deploy-preview.outputs.preview_url }}
-          configPath: './lighthouserc.json'
-          uploadArtifacts: true
-          temporaryPublicStorage: true
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
         env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Start application
+        run: |
+          npm start &
+          echo $! > server.pid
+          sleep 15
+
+      - name: Wait for server
+        run: |
+          for i in {1..30}; do
+            if curl -s http://localhost:3000 > /dev/null; then
+              echo "Server is ready!"
+              exit 0
+            fi
+            echo "Waiting for server... (attempt $i)"
+            sleep 2
+          done
+          echo "Server failed to start"
+          exit 1
+
+      - name: Run Lighthouse Audit
+        run: |
+          npx lighthouse http://localhost:3000 \
+            --output=json \
+            --output=html \
+            --output-path=./lighthouse-results \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --preset=desktop \
+            --quiet
+
+      - name: Upload Lighthouse Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-report
+          path: |
+            lighthouse-results.report.html
+            lighthouse-results.report.json
+
+      - name: Parse Lighthouse Results
+        run: |
+          PERFORMANCE=$(cat lighthouse-results.report.json | jq '.categories.performance.score')
+          ACCESSIBILITY=$(cat lighthouse-results.report.json | jq '.categories.accessibility.score')
+          BEST_PRACTICES=$(cat lighthouse-results.report.json | jq '.categories["best-practices"].score')
+          SEO=$(cat lighthouse-results.report.json | jq '.categories.seo.score')
+
+          echo "## 🚀 Lighthouse Performance Report" >> $GITHUB_STEP_SUMMARY
+          echo "| Category | Score | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance | $(echo $PERFORMANCE | awk '{printf "%.0f", $1*100}')% | $([ $(echo "$PERFORMANCE > 0.8" | bc) -eq 1 ] && echo "✅" || echo "⚠️") |" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | $(echo $ACCESSIBILITY | awk '{printf "%.0f", $1*100}')% | $([ $(echo "$ACCESSIBILITY > 0.9" | bc) -eq 1 ] && echo "✅" || echo "⚠️") |" >> $GITHUB_STEP_SUMMARY
+          echo "| Best Practices | $(echo $BEST_PRACTICES | awk '{printf "%.0f", $1*100}')% | $([ $(echo "$BEST_PRACTICES > 0.9" | bc) -eq 1 ] && echo "✅" || echo "⚠️") |" >> $GITHUB_STEP_SUMMARY
+          echo "| SEO | $(echo $SEO | awk '{printf "%.0f", $1*100}')% | $([ $(echo "$SEO > 0.9" | bc) -eq 1 ] && echo "✅" || echo "⚠️") |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 [View detailed report in artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+            rm server.pid
+          fi
