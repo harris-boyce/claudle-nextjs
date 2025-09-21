@@ -48,6 +48,8 @@ jobs:
     name: Deploy Preview
     needs: test
     if: github.event_name == 'pull_request'
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.preview_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -121,7 +123,7 @@ jobs:
               repo: context.repo.repo,
               tag_name: `v1.0.${{ github.run_number }}`,
               name: `ClaudLE v1.0.${{ github.run_number }} - ${{ github.event.head_commit.message }}`,
-              body: `🎯 **Production deployment successful!**\n\n🚀 Live URL: ${{ steps.deploy.outputs.production_url }}\n\nCommit: ${{ github.event.head_commit.message }}\nSHA: ${{ github.sha }}\n\n### Features:\n- AI-Enhanced Wordle\n- 10 Unique Themes\n- Ted Lasso & Roy Kent Coaching\n- Rate Limited API\n- Educational Prompt Engineering Resource\n\n---\n*Deployed via GitHub Actions*`,
+              body: `🎯 **Production deployment successful!**\n\n🚀 Live URL: https://claudle-nextjs.vercel.app\n\nCommit: ${{ github.event.head_commit.message }}\nSHA: ${{ github.sha }}\n\n### Features:\n- AI-Enhanced Wordle with Strategic Coaching\n- 10 Unique Themes (Technology, Nature, Movies, etc.)\n- Ted Lasso & Roy Kent AI Personalities\n- Production-Ready AI Integration Patterns\n- Educational Prompt Engineering Resource\n- Progressive Web App Experience\n\n### Educational Value:\n- Complete Tutorial System (Artifact → Enterprise Platform)\n- Sophisticated Prompt Engineering Examples\n- Cost-Controlled AI Integration Patterns\n- Community Learning Platform\n\n---\n*Deployed via GitHub Actions | Built with Claude Code*`,
               draft: false,
               prerelease: false
             })
@@ -135,6 +137,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Wait for deployment
+        run: sleep 30
+
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v10
         with:
@@ -143,3 +148,5 @@ jobs:
           configPath: './lighthouserc.json'
           uploadArtifacts: true
           temporaryPublicStorage: true
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
