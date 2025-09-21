@@ -101,6 +101,7 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# Claude Code specific
-.claude/
+# Claude Code specific - ignore personal settings but include shared config
+.claude/settings.local.json
+.claude/conversations/
 claude-sessions/

@@ -1,0 +1,39 @@
+# Vercel Ignore Configuration
+# Disable auto-deployments - use GitHub Actions instead
+
+# Environment files (should be configured in Vercel dashboard)
+.env*
+!.env.local.example
+
+# Development and testing
+node_modules/
+.next/
+coverage/
+test-results/
+
+# Git and CI
+.git/
+.github/
+
+# Documentation (not needed for deployment)
+docs/
+*.md
+!README.md
+
+# Claude Code specific
+.claude/
+claude-sessions/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/

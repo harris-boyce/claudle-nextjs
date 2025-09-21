@@ -1,0 +1,74 @@
+{
+  "description": "ClaudLE - AI Prompt Engineering Learning Platform",
+  "defaultBranch": "main",
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(git status)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "Bash(git tag*)",
+      "Bash(git ls-files*)",
+      "Bash(git add *)",
+      "Bash(git restore *)",
+      "Bash(git checkout -- *)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:nextjs.org)",
+      "WebFetch(domain:vercel.com)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean -fd*)"
+    ],
+    "ask": [
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git pull*)",
+      "Bash(git merge*)",
+      "Bash(git rebase*)",
+      "Bash(git reset*)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git stash*)",
+      "Bash(git remote*)",
+      "Bash(git fetch*)",
+      "Bash(rm *)",
+      "Bash(mv *)",
+      "Bash(cp -r *)"
+    ]
+  },
+  "workspaceRules": {
+    "enableAutoSave": true,
+    "respectGitignore": true,
+    "maxFileSize": "1MB"
+  },
+  "customInstructions": {
+    "projectContext": "This is ClaudLE, an educational AI prompt engineering platform that teaches developers how to transform Claude artifacts into production applications. The project demonstrates sophisticated prompt engineering through an interactive word game with AI coaching.",
+    "codeStyle": "Follow TypeScript best practices, use Tailwind CSS for styling, maintain clean component architecture, and prioritize educational value in all implementations.",
+    "testingApproach": "Ensure all changes pass `npm run type-check`, `npm run lint`, and `npm run build` before committing.",
+    "documentationStandard": "All new features should include updates to relevant tutorial documentation in docs/tutorials/ and consider educational impact."
+  },
+  "autoCommands": {
+    "onFileChange": [
+      "npm run type-check",
+      "npm run lint"
+    ],
+    "onBranchSwitch": [
+      "npm install",
+      "npm run type-check"
+    ]
+  }
+}

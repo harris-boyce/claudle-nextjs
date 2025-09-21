@@ -1,0 +1,78 @@
+{
+  "name": "ClaudLE - AI Prompt Engineering Learning Platform",
+  "version": "1.0.0",
+  "description": "Educational platform demonstrating sophisticated AI prompt engineering through interactive gameplay",
+
+  "keyFiles": {
+    "entryPoints": [
+      "app/page.tsx",
+      "components/ClaudLE.tsx"
+    ],
+    "aiIntegration": [
+      "app/api/claude/coaching/route.ts",
+      "app/api/claude/get-hint/route.ts",
+      "app/api/claude/generate-word/route.ts",
+      "lib/claude-client.ts"
+    ],
+    "documentation": [
+      "README.md",
+      "docs/GETTING_STARTED.md",
+      "docs/tutorials/TUTORIAL-00-ARTIFACT-ORIGIN.md"
+    ],
+    "configuration": [
+      "package.json",
+      "tsconfig.json",
+      "tailwind.config.js",
+      ".env.local.example"
+    ]
+  },
+
+  "learningPaths": {
+    "beginners": [
+      "docs/GETTING_STARTED.md",
+      "docs/tutorials/TUTORIAL-00-ARTIFACT-ORIGIN.md",
+      "docs/tutorials/TUTORIAL-01-BASIC-GAME.md"
+    ],
+    "aiDevelopers": [
+      "app/api/claude/coaching/route.ts",
+      "docs/tutorials/TUTORIAL-02-AI-INTEGRATION.md",
+      "docs/tutorials/TUTORIAL-03-PROMPT-ENGINEERING.md"
+    ],
+    "promptEngineers": [
+      "docs/tutorials/TUTORIAL-03-PROMPT-ENGINEERING.md",
+      "app/api/claude/coaching/route.ts",
+      "lib/claude-client.ts"
+    ],
+    "productionReadiness": [
+      "docs/tutorials/TUTORIAL-04-OPERATIONALIZING.md",
+      "lib/device-analytics.ts",
+      ".github/workflows/deploy.yml"
+    ]
+  },
+
+  "commonTasks": {
+    "startDevelopment": "npm run dev",
+    "runTests": "npm run type-check && npm run lint && npm run build",
+    "viewTutorials": "ls docs/tutorials/",
+    "checkAIRoutes": "ls app/api/claude/",
+    "exploreComponents": "ls components/",
+    "checkDeployment": "cat .github/workflows/deploy.yml"
+  },
+
+  "educationalGoals": {
+    "primary": "Teach developers how to transform AI prototypes into production applications",
+    "secondary": [
+      "Demonstrate sophisticated prompt engineering techniques",
+      "Show cost-effective AI integration patterns",
+      "Provide real-world AI application architecture examples",
+      "Create collaborative learning experiences"
+    ]
+  },
+
+  "technicalStack": {
+    "frontend": ["Next.js 14", "React", "TypeScript", "Tailwind CSS"],
+    "ai": ["Claude Sonnet 4", "Anthropic API", "Custom prompt engineering"],
+    "deployment": ["Vercel", "GitHub Actions", "Progressive Web App"],
+    "analytics": ["Custom device tracking", "Usage analytics", "Cost monitoring"]
+  }
+}

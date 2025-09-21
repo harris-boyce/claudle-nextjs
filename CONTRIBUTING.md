@@ -37,38 +37,30 @@ ClaudLE demonstrates sophisticated prompt engineering techniques through an inte
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js 18+
-- Git knowledge
-- An Anthropic API key ([get one here](https://console.anthropic.com/))
-- Basic understanding of Next.js and React
+> **New to the project?** Start with our [comprehensive getting started guide](./docs/GETTING_STARTED.md) which covers multiple development environment options.
 
-### Setup for Development
-```bash
-# Fork the repository on GitHub, then:
-git clone https://github.com/YOUR_USERNAME/claudle-nextjs
-cd claudle-nextjs
-npm install
+### **Quick Setup for Contributors**
 
-# Set up environment
-cp .env.local.example .env.local
-# Add your ANTHROPIC_API_KEY to .env.local
+**🌟 Recommended: Use Codespaces**
+1. Fork this repository
+2. Click "Code" → "Codespaces" → "Create codespace"
+3. Everything is automatically configured - start contributing!
 
-# Start development server
-npm run dev
-```
+**🔧 Alternative: Local Development**
+See [GETTING_STARTED.md](./GETTING_STARTED.md) for detailed local setup options.
 
 ### Using the Tutorial Structure
 Before contributing, explore our progressive tutorial:
 ```bash
 # Start with the origin story
-cat TUTORIAL-00-ARTIFACT-ORIGIN.md
+cat docs/tutorials/TUTORIAL-00-ARTIFACT-ORIGIN.md
 
 # Explore the progression
 git checkout tutorial-01-basic-game
 git checkout tutorial-02-ai-integration
 git checkout tutorial-03-prompt-engineering
-# ... etc
+git checkout tutorial-04-operationalizing
+git checkout tutorial-05-complete-platform
 ```
 
 ## 📝 Contribution Guidelines
