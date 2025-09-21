@@ -136,6 +136,11 @@ Works on any Next.js-compatible platform: Netlify, Railway, Render, or self-host
 
 We welcome contributions that enhance the educational value or improve the AI interactions!
 
+### **Join the Community**
+- 💬 **[GitHub Discussions](../../discussions)** - Ask questions, share knowledge, and connect with other AI developers
+- 🐛 **[Issues](../../issues)** - Report bugs or request features
+- 🔧 **[Pull Requests](../../pulls)** - Contribute improvements
+
 ### Areas for Contribution:
 - **New coaching personalities** - Add different AI coaching styles
 - **Advanced prompt techniques** - Demonstrate new prompting patterns
